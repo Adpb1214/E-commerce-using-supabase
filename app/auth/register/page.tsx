@@ -1,4 +1,3 @@
-// src/app/(auth)/register/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -19,15 +18,16 @@ const Register = () => {
     city: "",
     zip_code: "",
     photo_url: "",
-    country:"",
-    state:""
+    country: "",
+    state: "",
+    role: "client", // Default role is 'client'
   });
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -37,7 +37,7 @@ const Register = () => {
     setLoading(true);
     setError("");
 
-    const { email, password, name, phone_number, address, city, zip_code, photo_url,country,state } = form;
+    const { email, password, name, phone_number, address, city, zip_code, photo_url, country, state, role } = form;
 
     try {
       // Create a user in Supabase Auth
@@ -62,6 +62,7 @@ const Register = () => {
           photo_url,
           country,
           state,
+          role, // Insert the role ('client' or 'admin')
         });
 
         if (profileError) throw profileError;
@@ -144,7 +145,7 @@ const Register = () => {
           required
           className="w-full p-2 border rounded"
         />
-          <input
+        <input
           type="text"
           name="country"
           placeholder="Country"
@@ -153,7 +154,7 @@ const Register = () => {
           required
           className="w-full p-2 border rounded"
         />
-          <input
+        <input
           type="text"
           name="state"
           placeholder="State"
@@ -170,6 +171,16 @@ const Register = () => {
           onChange={handleChange}
           className="w-full p-2 border rounded"
         />
+        <select
+          name="role"
+          value={form.role}
+          onChange={handleChange}
+          required
+          className="w-full p-2 border rounded bg-white"
+        >
+          <option value="client">Client</option>
+          <option value="admin">Admin</option>
+        </select>
         <button
           type="submit"
           disabled={loading}
@@ -183,4 +194,3 @@ const Register = () => {
 };
 
 export default Register;
-

@@ -1,4 +1,3 @@
-// src/app/(auth)/login/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -9,11 +8,11 @@ const Login = () => {
   const supabase = createClientComponentClient();
   const router = useRouter();
 
+  // Form state
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -29,18 +28,39 @@ const Login = () => {
     const { email, password } = form;
 
     try {
-      // Authenticate user with Supabase
-      const { error } = await supabase.auth.signInWithPassword({
+      // Log in the user
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) throw error;
 
-      // Redirect to dashboard or home page after successful login
-      router.push("/");
+      const user = data.user;
+
+      if (user) {
+        // Fetch the user's role
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+
+        if (profileError) throw profileError;
+
+        const userRole = profile.role;
+
+        // Redirect based on the role
+        if (userRole === "admin") {
+          router.push("/admin");
+        } else if (userRole === "client") {
+          router.push("/customer");
+        } else {
+          throw new Error("Invalid role. Please contact support.");
+        }
+      }
     } catch (err: any) {
-      setError(err.message || "Login failed. Please check your credentials.");
+      setError(err.message || "Something went wrong!");
     } finally {
       setLoading(false);
     }
