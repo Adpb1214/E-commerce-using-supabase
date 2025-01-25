@@ -56,8 +56,20 @@ const ClientDashboard = () => {
     datasets: [
       {
         data: Object.values(categorySales),
-        backgroundColor: ["#4CAF50", "#FF9800", "#2196F3", "#FF5722", "#9C27B0"],
-        hoverBackgroundColor: ["#66BB6A", "#FFB74D", "#42A5F5", "#FF7043", "#AB47BC"],
+        backgroundColor: [
+          "#4CAF50",
+          "#FF9800",
+          "#2196F3",
+          "#FF5722",
+          "#9C27B0",
+        ],
+        hoverBackgroundColor: [
+          "#66BB6A",
+          "#FFB74D",
+          "#42A5F5",
+          "#FF7043",
+          "#AB47BC",
+        ],
       },
     ],
   };
@@ -77,13 +89,30 @@ const ClientDashboard = () => {
       <section className="mb-12">
         <h2 className="text-xl font-semibold mb-4">Top Selling Products</h2>
         <Marquee gradient={false} speed={50}>
-          {products.slice(0, 5).map((product: any) => (
-            <div key={product.id} className="w-48 mr-6 bg-white rounded-lg shadow-lg overflow-hidden">
-              <img src={product.image_url} alt={product.title} className="w-full h-48 object-cover" />
+          {products.slice(0, 10).map((product: any) => (
+            <div
+              key={product.id}
+              className="w-48 mr-6 bg-white rounded-lg shadow-lg overflow-hidden"
+            >
+              <img
+                src={product.image_url}
+                alt={product.title}
+                className="w-full h-48 object-cover"
+              />
               <div className="p-4">
                 <h3 className="text-lg font-semibold">{product.title}</h3>
-                <p className="text-gray-500 text-sm mt-1">{product.description}</p>
+                <p className="text-gray-500 text-sm mt-1">
+                  {product.description}
+                </p>
                 <p className="text-blue-600 font-bold mt-2">${product.price}</p>
+                <div className="mt-4">
+                  <Link
+                    href={`/customer/${product.id}`}
+                    className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 text-sm"
+                  >
+                    View Details
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
@@ -98,9 +127,16 @@ const ClientDashboard = () => {
             <Link href={`/category/${category}`} key={category}>
               <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300 cursor-pointer">
                 <div className="p-6 text-center">
-                  <h3 className="text-lg font-semibold text-gray-700">{category}</h3>
+                  <h3 className="text-lg font-semibold text-gray-700">
+                    {category}
+                  </h3>
                   <p className="text-gray-500 mt-2">
-                    {products.filter(product => product.category === category).length} Products
+                    {
+                      products.filter(
+                        (product) => product.category === category
+                      ).length
+                    }{" "}
+                    Products
                   </p>
                 </div>
               </div>
@@ -113,13 +149,30 @@ const ClientDashboard = () => {
       <section className="mb-12">
         <h2 className="text-xl font-semibold mb-4">Top Deals</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.slice(0, 8).map((product: any) => (
-            <div key={product.id} className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-              <img src={product.image_url} alt={product.title} className="w-full h-48 object-cover" />
+          {products.slice(0, 15).map((product: any) => (
+            <div
+              key={product.id}
+              className="bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+            >
+              <img
+                src={product.image_url}
+                alt={product.title}
+                className="w-full h-48 object-cover"
+              />
               <div className="p-4">
                 <h3 className="text-lg font-semibold">{product.title}</h3>
-                <p className="text-gray-500 text-sm mt-1">{product.description}</p>
+                <p className="text-gray-500 text-sm mt-1">
+                  {product.description}
+                </p>
                 <p className="text-blue-600 font-bold mt-2">${product.price}</p>
+                <div className="mt-4">
+                  <Link
+                    href={`/customer/${product.id}`}
+                    className="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 text-sm"
+                  >
+                    View Details
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
