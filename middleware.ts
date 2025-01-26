@@ -12,8 +12,9 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // If the user is not logged in, redirect to the login page
+  // Redirect to login if session is not found
   if (!session) {
+    console.log("No session found, redirecting to login.");
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
@@ -25,24 +26,27 @@ export async function middleware(req: NextRequest) {
     .single();
 
   if (error || !profile) {
+    console.error("Error fetching user profile or role:", error);
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  const userRole = profile.role;
+  const userRole = profile.role; // 'admin' or 'client'
   const pathname = req.nextUrl.pathname;
 
-  // Role-based route access
+  // Role-based access control
   if (pathname.startsWith("/admin") && userRole !== "admin") {
-    return NextResponse.redirect(new URL("/customer", req.url)); // Redirect clients trying to access admin routes
+    console.warn("Unauthorized access to /admin by non-admin user.");
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
   if (pathname.startsWith("/customer") && userRole !== "client") {
-    return NextResponse.redirect(new URL("/admin", req.url)); // Redirect admins trying to access client routes
+    console.warn("Unauthorized access to /customer by non-client user.");
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  return res; // Allow access if the user has the appropriate role
+  return res; // Allow access if all checks pass
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/customer/:path*"], // Match all /admin and /customer routes
+  matcher: ["/admin/:path*", "/customer/:path*"], // Match /admin and /customer routes
 };

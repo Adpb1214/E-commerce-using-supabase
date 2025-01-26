@@ -34,6 +34,7 @@ export default function OrdersPage() {
 
   const fetchOrders = async () => {
     const { data: user, error: userError } = await supabase.auth.getUser();
+    console.log(user,"userrr")
     if (userError || !user) {
       console.error("User not authenticated:", userError);
       setError("You must log in to view your orders.");
