@@ -201,12 +201,12 @@ export default function AdminOrders() {
                   <TableRow key={order.id}>
                     <TableCell className="font-medium">#{order.id}</TableCell>
                     <TableCell>
-                      <div>{order.user.name}</div>
-                      <div className="text-sm text-muted-foreground">{order.user.phone_number}</div>
+                      <div>{order.user?.name}</div>
+                      <div className="text-sm text-muted-foreground">{order.user?.phone_number}</div>
                     </TableCell>
                     <TableCell>
                       {order.order_items.map((item) => (
-                        <div key={item.product_id}>{item.products.title} x {item.quantity}</div>
+                        <div key={item.product_id}>{item.products?.title} x {item.quantity}</div>
                       ))}
                     </TableCell>
                     <TableCell>{format(new Date(order.created_at), "MMM d, yyyy HH:mm")}</TableCell>
