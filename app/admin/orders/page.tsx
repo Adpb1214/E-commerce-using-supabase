@@ -105,15 +105,18 @@ console.log(orders,"odddddd")
         total_price: order.total_price,
         created_at: order.created_at,
         order_status: order.order_status,
-        user: order.user?.length > 0 ? order.user[0] : { id: '', phone_number: '', name: '' },  // Safely access the first profile
-        order_items: order.order_items.map((item: any) => ({
+  
+        // Extracts first user object (if array) or assigns default values
+        user: Array.isArray(order.user) && order.user.length > 0 
+          ? order.user[0] 
+          : { id: "", phone_number: "", name: "" }, 
+  
+        // Ensure `products` is an object, not an array
+        order_items: order.order_items.map((item) => ({
           product_id: item.product_id,
           quantity: item.quantity,
           price: item.price,
-          products: {
-            title: item.products.title,
-            description: item.products.description,
-          },
+          products: Array.isArray(item.products) ? item.products[0] : item.products,
         })),
       }));
   

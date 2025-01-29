@@ -94,15 +94,18 @@ export default function DashboardPage() {
       total_price: order.total_price,
       created_at: order.created_at,
       order_status: order.order_status,
-      user: order.user.length > 0 ? order.user[0] : { id: '', phone_number: '', name: '' },  // Access the first user profile
-      order_items: order.order_items.map((item: any) => ({
+      user:
+        order.user.length > 0
+          ? order.user[0]
+          : { id: "", phone_number: "", name: "" }, // Ensuring it's an object, not an array
+      order_items: order.order_items.map((item) => ({
         product_id: item.product_id,
         quantity: item.quantity,
         price: item.price,
         products: {
-          title: item.products.title,
-          description: item.products.description,
-          category: item.products.category,  // Ensure the category is added
+          title: item.products[0]?.title,
+          description: item.products[0]?.description,
+          category: item.products[0]?.category,
         },
       })),
     }));

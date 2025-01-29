@@ -59,8 +59,12 @@ const Login = () => {
           throw new Error("Invalid role. Please contact support.");
         }
       }
-    } catch (err) {
-      setError( "Something went wrong!");
+    }catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message); // Extract the error message
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }

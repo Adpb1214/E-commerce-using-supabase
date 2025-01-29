@@ -20,7 +20,7 @@ const draw = {
 
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams()
-  const productString = searchParams.get("product")
+
 
 
   return (
