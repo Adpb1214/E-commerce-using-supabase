@@ -1,6 +1,6 @@
 "use client"
 
-import type { ComponentProps } from "react"
+import type { ComponentProps, ReactElement } from "react"
 import {
   Line,
   LineChart as LineChartPrimitive,
@@ -25,7 +25,11 @@ const THEMES = {
   dark: "--dark",
 }
 
-export function ChartContainer({ children, className, ...props }: ComponentProps<"div">) {
+export function ChartContainer({
+  children,
+  className,
+  ...props
+}: ComponentProps<"div"> & { children: ReactElement }) {
   return (
     <div className={className} {...props}>
       <ResponsiveContainer width="100%" height="100%">
@@ -36,7 +40,6 @@ export function ChartContainer({ children, className, ...props }: ComponentProps
 }
 
 export function LineChart({
-  
   data,
   id,
   config,
@@ -54,7 +57,6 @@ export function LineChart({
 }
 
 export function PieChart({
-  
   data,
   id,
   config,
@@ -100,4 +102,3 @@ ${colorConfig
     />
   )
 }
-
