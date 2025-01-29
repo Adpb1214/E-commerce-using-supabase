@@ -1,80 +1,45 @@
-"use client";
+import Link from "next/link";
 
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import InputBase from "@mui/material/InputBase";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import { ShoppingCart, AccountCircle, Search } from "@mui/icons-material";
-import { useState } from "react";
-
-export function Header() {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+export default function Header() {
   return (
-    <AppBar position="sticky" color="primary">
-      <Toolbar>
-        {/* Logo */}
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          E-Shop
-        </Typography>
+    <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center ">
+      {/* Logo */}
+      <div className="font-bold text-xl text-primary">
+        <Link href="/">MyLogo</Link>
+      </div>
 
-        {/* Search Bar */}
-        <div style={{ position: "relative", marginRight: "16px" }}>
-          <Search
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "8px",
-              transform: "translateY(-50%)",
-            }}
-          />
-          <InputBase
-            placeholder="Search products…"
-            style={{
-              color: "white",
-              backgroundColor: "rgba(255, 255, 255, 0.15)",
-              paddingLeft: "32px",
-              borderRadius: "4px",
-            }}
-          />
-        </div>
-
-        {/* Navigation Icons */}
-        <IconButton color="inherit" href="/client/cart">
-          <ShoppingCart />
-        </IconButton>
-        <IconButton color="inherit" onClick={handleMenu}>
-          <AccountCircle />
-        </IconButton>
-
-        {/* User Menu */}
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
+      {/* Menu (Login and Signup) */}
+      <div className="hidden md:flex space-x-6">
+        <Link href="/auth/login" className=" bg-primary text-white px-4 py-2 rounded-md  hover:bg-primary-dark transition-all text-primary hover:text-primary-dark font-medium">
+          Login
+        </Link>
+        <Link
+          href="/auth/register"
+          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark transition-all"
         >
-          <MenuItem onClick={handleClose} component="a" href="/auth/login">
-            Login
-          </MenuItem>
-          <MenuItem onClick={handleClose} component="a" href="/auth/register">
-            Register
-          </MenuItem>
-          <MenuItem onClick={handleClose} component="a" href="/client/settings">
-            Profile
-          </MenuItem>
-        </Menu>
-      </Toolbar>
-    </AppBar>
+          Sign Up
+        </Link>
+      </div>
+
+      {/* Mobile Menu Button */}
+      <div className="md:hidden flex items-center">
+        <button className="text-primary focus:outline-none">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
   );
 }

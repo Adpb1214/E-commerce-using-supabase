@@ -3,12 +3,14 @@
 // app/layout.tsx
 import { usePathname } from "next/navigation";
 import "./globals.css";
-import { Footer } from "./Layout/Footer/page";
+// import { Footer } from "./Layout/Footer/page";
 import AdminHeader from "./Layout/Header/AdminHeader";
-import { Header } from "./Layout/Header/page";
+// import { Header } from "./Layout/Header/page";
 import CustomerHeader from "./Layout/Header/CustomerHeader";
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "./Layout/Footer/page";
+import Header from "./Layout/Header/page";
 // export const metadata = {
 //   title: "E-Commerce",
 //   description: "A modern e-commerce application",
