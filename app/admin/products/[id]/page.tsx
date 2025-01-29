@@ -4,12 +4,20 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
+type product = {
+  title: string;
+  description: string;
+  price: string;
+  stock: string;
+  category: string;
+  image_url: string;
+};
 const ProductDetails = () => {
   const supabase = createClientComponentClient();
   const router = useRouter();
   const { id } = useParams();
 
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<product>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [form, setForm] = useState({
@@ -25,7 +33,11 @@ const ProductDetails = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data, error } = await supabase.from("products").select("*").eq("id", id).single();
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .eq("id", id)
+          .single();
 
         if (error) throw error;
 
@@ -38,8 +50,8 @@ const ProductDetails = () => {
           category: data.category,
           image_url: data.image_url,
         });
-      } catch (err: any) {
-        setError(err.message || "Failed to fetch product details.");
+      } catch (err) {
+        setError("Failed to fetch product details.");
       } finally {
         setLoading(false);
       }
@@ -49,7 +61,9 @@ const ProductDetails = () => {
   }, [id, supabase]);
 
   // Handle form input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -59,21 +73,24 @@ const ProductDetails = () => {
     setError("");
 
     try {
-      const { error } = await supabase.from("products").update({
-        title: form.title,
-        description: form.description,
-        price: parseFloat(form.price),
-        stock: parseInt(form.stock, 10),
-        category: form.category,
-        image_url: form.image_url,
-      }).eq("id", id);
+      const { error } = await supabase
+        .from("products")
+        .update({
+          title: form.title,
+          description: form.description,
+          price: parseFloat(form.price),
+          stock: parseInt(form.stock, 10),
+          category: form.category,
+          image_url: form.image_url,
+        })
+        .eq("id", id);
 
       if (error) throw error;
 
       alert("Product updated successfully!");
       router.refresh();
-    } catch (err: any) {
-      setError(err.message || "Failed to update product.");
+    } catch (err) {
+      setError("Failed to update product.");
     } finally {
       setLoading(false);
     }
@@ -93,8 +110,8 @@ const ProductDetails = () => {
 
       alert("Product deleted successfully!");
       router.push("/admin/products");
-    } catch (err: any) {
-      setError(err.message || "Failed to delete product.");
+    } catch (err) {
+      setError("Failed to delete product.");
     } finally {
       setLoading(false);
     }
@@ -107,7 +124,11 @@ const ProductDetails = () => {
     <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
       <h1 className="text-2xl font-bold mb-6">Product Details</h1>
       <div className="mb-6">
-        <img src={product.image_url} alt={product.title} className="w-full h-64 object-cover rounded-lg" />
+        <img
+          src={product?.image_url}
+          alt={product?.title}
+          className="w-full h-64 object-cover rounded-lg"
+        />
       </div>
       <form className="space-y-4">
         <input

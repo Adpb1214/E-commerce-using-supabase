@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+
 
 interface CategorySectionProps {
   products: Product[];

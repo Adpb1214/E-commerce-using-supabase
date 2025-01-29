@@ -2,7 +2,7 @@ import { Star } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import Link from "next/link"
+
 
 export interface Product {
     id: number

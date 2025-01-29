@@ -22,9 +22,9 @@ const ClientDashboard = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const [categorySales, setCategorySales] = useState<Record<string, number>>(
-    {}
-  );
+  // const [categorySales, setCategorySales] = useState<Record<string, number>>(
+  //   {}
+  // );
   const [loading, setLoading] = useState(true);
   const [featuredProduct, setFeaturedProduct] = useState<Product | null>(null);
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
@@ -39,7 +39,7 @@ const ClientDashboard = () => {
         salesByCategory[product.category] = totalSales;
       }
     });
-    setCategorySales(salesByCategory);
+    // setCategorySales(salesByCategory);
   };
 
   const handleCategoryClick = (category: string) => {

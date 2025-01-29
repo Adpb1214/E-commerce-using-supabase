@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { useParams, useRouter } from "next/navigation"
+import { useParams} from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Star, Share2 } from "lucide-react"
 
@@ -11,16 +11,48 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
 import { Label } from "@/components/ui/label"
+
+type UserProfile = {
+  id: string
+  name: string
+  phone_number: string
+  photo_url: string
+  zip_code: string
+  address: string
+  city: string
+  state: string
+  created_at: string
+}
+type reviews={
+  id:string;
+  rating:number;
+  review:string;
+  user_id:string;
+  product_id:string;
+  profiles:UserProfile;
+  name:string
+}
+type Product = {
+  id: string
+  title: string
+  description: string
+  price: number
+  stock: number
+  category: string
+  image_url: string
+  sales_count: number
+}
+
 
 export default function ProductDetail() {
   const supabase = createClientComponentClient()
-  const router = useRouter()
+ 
   const { id } = useParams()
 
-  const [product, setProduct] = React.useState<any>(null)
-  const [reviews, setReviews] = React.useState<any[]>([])
+  const [product, setProduct] = React.useState<Product>()
+  const [reviews, setReviews] = React.useState<reviews[]>([])
   const [newReview, setNewReview] = React.useState({ rating: 0, review: "" })
   const [error, setError] = React.useState<string | null>(null)
 
@@ -149,7 +181,7 @@ export default function ProductDetail() {
           <div className="relative aspect-square overflow-hidden rounded-lg border bg-white">
             <img
               src={product.image_url || "/placeholder.svg"}
-              alt={product.name}
+              alt={product.title}
               // fill
               className="object-contain h-full w-full"
               // priority
@@ -176,10 +208,9 @@ export default function ProductDetail() {
                 {averageRating.toFixed(1)} Star Rating ({reviews.length} Reviews)
               </span>
             </div>
-            <h1 className="text-2xl font-bold">{product.name}</h1>
+            <h1 className="text-2xl font-bold">{product?.title}</h1>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>SKU: {product.sku}</span>
-              <span>Brand: {product.brand}</span>
+             
               <span>Category: {product.category}</span>
             </div>
             <div className="text-sm text-green-600">Availability: {product?.stock ? "In Stock" : "Out of Stock"}</div>
@@ -187,35 +218,10 @@ export default function ProductDetail() {
 
           <div className="flex items-baseline gap-4">
             <span className="text-3xl font-bold">${product.price}</span>
-            {product.original_price && (
-              <>
-                <span className="text-lg text-muted-foreground line-through">${product.original_price}</span>
-                <span className="rounded-md bg-yellow-100 px-2 py-1 text-sm font-medium text-yellow-800">
-                  {Math.round((1 - product.price / product.original_price) * 100)}% OFF
-                </span>
-              </>
-            )}
+           
           </div>
 
-          {product.colors && (
-            <div className="space-y-4">
-              <div>
-                <Label className="text-sm font-medium">Color</Label>
-                <RadioGroup defaultValue={product.colors[0]} className="flex gap-2 mt-2">
-                  {product.colors.map((color: string) => (
-                    <Label
-                      key={color}
-                      htmlFor={color}
-                      className="border cursor-pointer rounded-full p-2 [&:has(:checked)]:ring-2 [&:has(:checked)]:ring-primary"
-                    >
-                      <RadioGroupItem id={color} value={color} className="sr-only" />
-                      <div className="h-6 w-6 rounded-full" style={{ backgroundColor: color }} />
-                    </Label>
-                  ))}
-                </RadioGroup>
-              </div>
-            </div>
-          )}
+         
 
           <div className="flex flex-col sm:flex-row gap-4">
             <Button className="flex-1" size="lg" onClick={addToWishlist}>

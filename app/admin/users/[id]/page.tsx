@@ -8,6 +8,17 @@ import { User, MapPin, Calendar, Phone, Mail, ShoppingBag, Heart, ShoppingCart }
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
+type Product = {
+  id: string
+  title: string
+  description: string
+  price: number
+  stock: number
+  category: string
+  image_url: string
+  sales_count: number
+}
+
 type UserProfile = {
   id: string
   name: string
@@ -25,7 +36,7 @@ type Order = {
   created_at: string
   total_price: number
   order_status: string
-  products: any[]
+  products: Product[]
 }
 
 const ProfilePage = () => {

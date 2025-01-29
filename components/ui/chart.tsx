@@ -36,7 +36,7 @@ export function ChartContainer({ children, className, ...props }: ComponentProps
 }
 
 export function LineChart({
-  className,
+  
   data,
   id,
   config,
@@ -54,7 +54,7 @@ export function LineChart({
 }
 
 export function PieChart({
-  className,
+  
   data,
   id,
   config,

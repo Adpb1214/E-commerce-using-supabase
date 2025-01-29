@@ -70,8 +70,8 @@ const Register = () => {
         alert("Registration successful!");
         router.push("/auth/login"); // Redirect to login page
       }
-    } catch (err: any) {
-      setError(err.message || "Something went wrong!");
+    } catch (err) {
+      setError("Something went wrong!");
     } finally {
       setLoading(false);
     }

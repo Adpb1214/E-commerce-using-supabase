@@ -21,7 +21,7 @@ const draw = {
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams()
   const productString = searchParams.get("product")
-  const product = productString ? JSON.parse(productString) : null
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
