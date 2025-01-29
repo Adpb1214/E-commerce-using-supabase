@@ -53,7 +53,7 @@ export default function AdminHeader() {
       {/* Left: Logo & Navigation */}
       <div className="flex items-center gap-6">
         <Link href="/admin">
-          <h1 className="text-xl font-bold tracking-wide">Admin Panel</h1>
+          <h1 className="text-xl font-bold tracking-wide">ShopEase</h1>
         </Link>
         <nav className="hidden md:flex gap-4">
           <Link href="/admin/users" className="hover:text-gray-300">

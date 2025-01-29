@@ -181,7 +181,7 @@ const userdata=user?.user;
           {cartItems.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-muted-foreground mb-4">Your cart is empty.</p>
-              <Link href="/shop">
+              <Link href="/customer/products">
                 <Button>
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Continue Shopping

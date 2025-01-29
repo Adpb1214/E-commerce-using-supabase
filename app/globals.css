@@ -70,3 +70,74 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* HomePage.css */
+.home-container {
+  font-family: 'Arial', sans-serif;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #FF6F61, #FF9F1C);
+  color: white;
+  padding: 50px 0;
+  text-align: center;
+}
+
+.hero-text {
+  margin-top: 20px;
+}
+
+.auth-buttons {
+  margin-top: 20px;
+}
+
+.auth-button {
+  margin: 0 10px;
+}
+
+.auth-link {
+  color: white;
+  text-decoration: none;
+}
+
+.features-section {
+  margin: 40px 0;
+  padding: 20px;
+}
+
+.offer-card {
+  height: 300px; /* Fixed height for consistency */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card {
+  height: 300px; /* Fixed height for consistency */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.offer-image {
+  width: 100%;
+  height: 200px; /* Ensure consistent image size */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .hero-section {
+    padding: 30px 0;
+  }
+
+  .offer-card {
+    margin: 10px 0;
+  }
+}

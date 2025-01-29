@@ -46,7 +46,7 @@ export default function CustomerHeader() {
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
         {/* Left - Navigation */}
         <Link href="/" className="text-xl font-semibold text-gray-900">
-            MyShop
+            ShopEase
           </Link>
 
         {/* Right - Logo & Profile */}

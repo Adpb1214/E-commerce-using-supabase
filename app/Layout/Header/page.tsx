@@ -2,10 +2,10 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="bg-white shadow-md px-6 py-4 flex justify-between items-center ">
+    <header className="bg-blue-300 shadow-md px-6 py-4 flex justify-between items-center ">
       {/* Logo */}
       <div className="font-bold text-xl text-primary">
-        <Link href="/">MyLogo</Link>
+        <Link href="/">ShopEase</Link>
       </div>
 
       {/* Menu (Login and Signup) */}

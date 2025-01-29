@@ -100,12 +100,12 @@ const ClientDashboard = () => {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-2">
       <TrendingProductsBanner
         title="Trending Products"
         description="Discover our hottest items and latest arrivals. Don't miss out on these must-have products!"
         imageUrl=""
-        linkUrl="/trending-products"
+        linkUrl="/customer/products"
       />
       
       {/* Rest of your dashboard content */}

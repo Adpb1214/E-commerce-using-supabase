@@ -225,7 +225,7 @@ export default function ProductDetail() {
 
           <div className="flex flex-col sm:flex-row gap-4">
             <Button className="flex-1" size="lg" onClick={addToWishlist}>
-              ADD TO CART
+              ADD TO WISHLIST
             </Button>
             <Button variant="outline" className="flex-1" size="lg">
               Add to Compare
