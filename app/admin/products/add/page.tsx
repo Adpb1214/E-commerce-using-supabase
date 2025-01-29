@@ -1,13 +1,13 @@
-// src/app/products/add/page.tsx
-"use client";
+"use client"
 
-import { useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
+import { useState } from "react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { useRouter } from "next/navigation"
+import { Loader2, AlertCircle } from "lucide-react"
 
 const AddProduct = () => {
-  const supabase = createClientComponentClient();
-  const router = useRouter();
+  const supabase = createClientComponentClient()
+  const router = useRouter()
 
   const [form, setForm] = useState({
     title: "",
@@ -16,120 +16,143 @@ const AddProduct = () => {
     stock: "",
     category: "",
     image_url: "",
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
-  // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+    e.preventDefault()
+    setLoading(true)
+    setError("")
 
-    const { title, description, price, stock, category, image_url } = form;
+    const { title, description, price, stock, category, image_url } = form
 
     try {
-      // Validate fields
       if (!title || !description || !price || !stock || !category || !image_url) {
-        setError("All fields are required.");
-        return;
+        setError("All fields are required.")
+        return
       }
 
-      // Add product to Supabase
       const { error } = await supabase.from("products").insert({
         title,
         description,
-        price: parseFloat(price),
-        stock: parseInt(stock, 10),
+        price: Number.parseFloat(price),
+        stock: Number.parseInt(stock, 10),
         category,
         image_url,
-      });
+      })
 
-      if (error) throw error;
+      if (error) throw error
 
-      alert("Product added successfully!");
-      router.push("/admin/products"); // Redirect to the products page
+      alert("Product added successfully!")
+      router.push("/admin/products")
     } catch (err: any) {
-      setError(err.message || "Something went wrong!");
+      setError(err.message || "Something went wrong!")
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
-      <h1 className="text-2xl font-bold text-center mb-6">Add New Product</h1>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="title"
-          placeholder="Product Title"
-          value={form.title}
-          onChange={handleChange}
-          required
-          className="w-full p-3 border rounded"
-        />
-        <textarea
-          name="description"
-          placeholder="Product Description"
-          value={form.description}
-          onChange={handleChange}
-          required
-          rows={4}
-          className="w-full p-3 border rounded"
-        />
-        <input
-          type="text"
-          name="price"
-          placeholder="Price (e.g., 49.99)"
-          value={form.price}
-          onChange={handleChange}
-          required
-          className="w-full p-3 border rounded"
-        />
-        <input
-          type="number"
-          name="stock"
-          placeholder="Stock Quantity"
-          value={form.stock}
-          onChange={handleChange}
-          required
-          className="w-full p-3 border rounded"
-        />
-        <input
-          type="text"
-          name="category"
-          placeholder="Category (e.g., Electronics, Clothing)"
-          value={form.category}
-          onChange={handleChange}
-          required
-          className="w-full p-3 border rounded"
-        />
-        <input
-          type="text"
-          name="image_url"
-          placeholder="Image URL"
-          value={form.image_url}
-          onChange={handleChange}
-          required
-          className="w-full p-3 border rounded"
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600"
-        >
-          {loading ? "Adding Product..." : "Add Product"}
-        </button>
-      </form>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <div className="bg-white shadow-2xl rounded-lg overflow-hidden transition-all duration-300 hover:shadow-3xl">
+          <div className="bg-gradient-to-r from-blue-500 to-indigo-600 py-6 px-6 sm:px-10">
+            <h1 className="text-3xl font-extrabold text-white text-center">Add New Product</h1>
+          </div>
+          <div className="p-6 sm:p-10">
+            {error && (
+              <div className="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded animate-pulse">
+                <div className="flex items-center">
+                  <AlertCircle className="h-5 w-5 mr-2" />
+                  <p>{error}</p>
+                </div>
+              </div>
+            )}
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="Product Title"
+                  value={form.title}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                />
+                <input
+                  type="text"
+                  name="price"
+                  placeholder="Price (e.g., 49.99)"
+                  value={form.price}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                />
+              </div>
+              <textarea
+                name="description"
+                placeholder="Product Description"
+                value={form.description}
+                onChange={handleChange}
+                required
+                rows={4}
+                className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+              />
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+                <input
+                  type="number"
+                  name="stock"
+                  placeholder="Stock Quantity"
+                  value={form.stock}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                />
+                <input
+                  type="text"
+                  name="category"
+                  placeholder="Category"
+                  value={form.category}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                />
+                <input
+                  type="text"
+                  name="image_url"
+                  placeholder="Image URL"
+                  value={form.image_url}
+                  onChange={handleChange}
+                  required
+                  className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-3 rounded-md font-semibold hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:-translate-y-1 hover:shadow-lg"
+              >
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <Loader2 className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" />
+                    Adding Product...
+                  </span>
+                ) : (
+                  "Add Product"
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddProduct;
+export default AddProduct
+

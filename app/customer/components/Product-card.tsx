@@ -2,6 +2,7 @@ import { Star } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import Link from "next/link"
 
 export interface Product {
     id: number
@@ -51,6 +52,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
           <h3 className="font-medium text-sm line-clamp-2 mb-2">{product.title}</h3>
           <p className="text-primary font-bold">${product.price}</p>
+          <button><a href={`/customer/products/${product.id}`}>See Detail</a></button>
         </div>
       </CardContent>
     </Card>

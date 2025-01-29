@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
+import { useForkRef } from "@mui/material";
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
@@ -17,7 +18,6 @@ export async function middleware(req: NextRequest) {
     console.log("No session found, redirecting to login.");
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
-
   // Fetch the user's role from the profiles table
   const { data: profile, error } = await supabase
     .from("profiles")

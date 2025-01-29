@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { ChevronRight, Search } from "lucide-react";
-// import type { Product, SortOption } from "@/types/product"
-// import { ProductCard } from "@/components/product-card"
-// import { ProductFilters } from "@/components/product-filters"
+import { Search } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
 import {
   Select,

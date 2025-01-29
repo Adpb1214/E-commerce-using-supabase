@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
+
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  images: {
+    domains: ["tse4.mm.bing.net"], // Add external image domains here
+  },
+}
 
 export default nextConfig;
