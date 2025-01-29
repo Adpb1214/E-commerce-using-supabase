@@ -19,7 +19,7 @@ const draw = {
 }
 
 export default function CheckoutSuccessPage() {
-  const searchParams = useSearchParams()
+ 
 
 
 
