@@ -1,5 +1,7 @@
 "use client";
 
+import { createClient } from "@supabase/supabase-js";
+
 import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import {
@@ -52,6 +54,19 @@ type Order = {
   order_items: OrderItem[];
 };
 
+const SUPABASE_URL =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  "https://ddhojupqexdhpvzzvznr.supabase.co";
+const SUPABASE_ANON_KEY =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkaG9qdXBxZXhkaHB2enp2em5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzcxOTY2NzQsImV4cCI6MjA1Mjc3MjY3NH0.1PJF-tKAjNzvUgBP6OwbT9xAzO7fiIymu2hKwMXYhSw";
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true, // Ensures session persists across reloads
+    detectSessionInUrl: true, // Handles session detection in the URL
+  },
+});
 export default function AdminOrders() {
   const supabase = createClientComponentClient();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -64,16 +79,15 @@ export default function AdminOrders() {
     pendingOrders: 0,
   });
 
-console.log(orders,"odddddd")
-
-
+  console.log(orders, "odddddd");
 
   const fetchOrders = async () => {
     setLoading(true);
-    
+
     const { data, error } = await supabase
       .from("orders")
-      .select(`
+      .select(
+        `
         id,
         total_price,
         created_at,
@@ -92,9 +106,10 @@ console.log(orders,"odddddd")
             description
           )
         )
-      `)
+      `
+      )
       .order("created_at", { ascending: false });
-  
+
     if (error) {
       console.error("Error fetching orders:", error.message);
       setError("Failed to fetch orders.");
@@ -105,32 +120,34 @@ console.log(orders,"odddddd")
         total_price: order.total_price,
         created_at: order.created_at,
         order_status: order.order_status,
-  
+
         // Extracts first user object (if array) or assigns default values
-        user: Array.isArray(order.user) && order.user.length > 0 
-          ? order.user[0] 
-          : { id: "", phone_number: "", name: "" }, 
-  
+        user:
+          Array.isArray(order.user) && order.user.length > 0
+            ? order.user[0]
+            : { id: "", phone_number: "", name: "" },
+
         // Ensure `products` is an object, not an array
         order_items: order.order_items.map((item) => ({
           product_id: item.product_id,
           quantity: item.quantity,
           price: item.price,
-          products: Array.isArray(item.products) ? item.products[0] : item.products,
+          products: Array.isArray(item.products)
+            ? item.products[0]
+            : item.products,
         })),
       }));
-  
+
       setOrders(formattedData);
       calculateMetrics(formattedData);
     }
-  
+
     setLoading(false);
   };
-  
+
   useEffect(() => {
     fetchOrders();
   }, []);
-
 
   const calculateMetrics = (orders: Order[]) => {
     const totalRevenue = orders.reduce(
@@ -191,7 +208,7 @@ console.log(orders,"odddddd")
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-            ${metrics.totalRevenue.toFixed(2)}
+              ${metrics.totalRevenue.toFixed(2)}
             </div>
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
@@ -221,7 +238,7 @@ console.log(orders,"odddddd")
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-            ${metrics.averageOrderValue.toFixed(2)}
+              ${metrics.averageOrderValue.toFixed(2)}
             </div>
             <p className="text-xs text-muted-foreground">+8% from last month</p>
           </CardContent>
