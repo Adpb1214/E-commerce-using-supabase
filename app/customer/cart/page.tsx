@@ -147,9 +147,12 @@ const userdata=user?.user;
 
       toast.success("Order placed successfully!")
       router.push("/customer/checkout")
-    } catch (err: any) {
-      setError(err.message || "An error occurred while placing the order.")
-      toast.error("Failed to place order")
+    }catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message); // Extract the error message
+      } else {
+        setError("An unknown error occurred");
+      }
     }
   }
 

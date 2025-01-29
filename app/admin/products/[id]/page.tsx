@@ -50,8 +50,12 @@ const ProductDetails = () => {
           category: data.category,
           image_url: data.image_url,
         });
-      } catch (err) {
-        setError("Failed to fetch product details.");
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message); // Extract the error message
+        } else {
+          setError("An unknown error occurred");
+        }
       } finally {
         setLoading(false);
       }
@@ -89,8 +93,12 @@ const ProductDetails = () => {
 
       alert("Product updated successfully!");
       router.refresh();
-    } catch (err) {
-      setError("Failed to update product.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message); // Extract the error message
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -110,8 +118,12 @@ const ProductDetails = () => {
 
       alert("Product deleted successfully!");
       router.push("/admin/products");
-    } catch (err) {
-      setError("Failed to delete product.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message); // Extract the error message
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }

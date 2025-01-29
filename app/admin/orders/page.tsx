@@ -64,6 +64,8 @@ export default function AdminOrders() {
     pendingOrders: 0,
   });
 
+console.log(orders,"odddddd")
+
 
 
   const fetchOrders = async () => {
@@ -76,11 +78,11 @@ export default function AdminOrders() {
         total_price,
         created_at,
         order_status,
-        profiles (
-          id,
-          phone_number,
-          name
-        ),
+       user:profiles (
+      id,
+      phone_number,
+      name
+    ),
         order_items (
           product_id,
           quantity,
@@ -98,10 +100,22 @@ export default function AdminOrders() {
       setError("Failed to fetch orders.");
     } else {
       // Type assertion to enforce expected structure
-      const formattedData = (data as any[]).map((order) => ({
-        ...order,
-        user: order.profiles, // Rename `profiles` to `user`
-      })) as Order[];
+      const formattedData: Order[] = data.map((order) => ({
+        id: order.id,
+        total_price: order.total_price,
+        created_at: order.created_at,
+        order_status: order.order_status,
+        user: order.user?.length > 0 ? order.user[0] : { id: '', phone_number: '', name: '' },  // Safely access the first profile
+        order_items: order.order_items.map((item: any) => ({
+          product_id: item.product_id,
+          quantity: item.quantity,
+          price: item.price,
+          products: {
+            title: item.products.title,
+            description: item.products.description,
+          },
+        })),
+      }));
   
       setOrders(formattedData);
       calculateMetrics(formattedData);

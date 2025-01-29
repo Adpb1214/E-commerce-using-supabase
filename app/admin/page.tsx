@@ -57,6 +57,8 @@ export default function DashboardPage() {
   }, []);
 
   const fetchOrders = async () => {
+
+    
     const { data: orders, error } = await supabase
       .from("orders")
       .select(`
@@ -87,10 +89,23 @@ export default function DashboardPage() {
       return;
     }
 
-    const formattedData = (orders as any[]).map((order) => ({
-      ...order,
-      user: order.profiles, // Rename `profiles` to `user`
-    })) as Order[];
+    const formattedData: Order[] = orders?.map((order) => ({
+      id: order.id,
+      total_price: order.total_price,
+      created_at: order.created_at,
+      order_status: order.order_status,
+      user: order.user.length > 0 ? order.user[0] : { id: '', phone_number: '', name: '' },  // Access the first user profile
+      order_items: order.order_items.map((item: any) => ({
+        product_id: item.product_id,
+        quantity: item.quantity,
+        price: item.price,
+        products: {
+          title: item.products.title,
+          description: item.products.description,
+          category: item.products.category,  // Ensure the category is added
+        },
+      })),
+    }));
 
     setOrders(formattedData || []);
     calculateMetrics(formattedData || []);

@@ -10,6 +10,20 @@ import { Order, OrderActivityLog } from "../../components/order-activity"
 import { OrderTimeline } from "../../components/order-timeline"
 import { Package } from "lucide-react"
 
+
+type Product = {
+  id: string
+  title: string
+  image_url: string
+}
+
+type OrderItem = {
+  product_id: string
+  price: number
+  quantity: number
+  products: Product
+}
+
 export default function OrderPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = use(params)
   const [order, setOrder] = useState<Order | null>(null)
@@ -35,7 +49,7 @@ export default function OrderPage({ params }: { params: Promise<{ id: string }> 
       } else if (orderData) {
         const transformedOrder: Order = {
           id: orderData.id,
-          products: orderData.order_items.map((item: any) => ({
+          products: orderData.order_items.map((item: OrderItem) => ({
             id: item.product_id,
             name: item.products.title,
             price: item.price,
