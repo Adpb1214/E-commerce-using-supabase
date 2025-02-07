@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const supabase = createClientComponentClient();
@@ -53,8 +54,10 @@ const Login = () => {
         // Redirect based on the role
         if (userRole === "admin") {
           router.push("/admin");
+          toast.success("Welcome Back Admin");
         } else if (userRole === "client") {
           router.push("/customer");
+          toast.success("Welcome Back Customer")
         } else {
           throw new Error("Invalid role. Please contact support.");
         }

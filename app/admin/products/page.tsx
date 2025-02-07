@@ -46,12 +46,20 @@ type Product = {
   sales_count: number;
 };
 
+type Order = {
+  id: string;
+  total_price: number;
+  created_at: string;
+  order_status: string;
+};
+
 const AdminPanel = () => {
   const supabase = createClientComponentClient();
   const [products, setProducts] = useState<Product[]>([]);
   const [categorySales, setCategorySales] = useState<Record<string, number>>(
     {}
   );
+  const [Orders, setOrders] = useState<Order[]>();
   const [categoryInventory, setCategoryInventory] = useState<
     Record<string, number>
   >({});
@@ -83,13 +91,26 @@ const AdminPanel = () => {
         console.error("Error fetching products:", error.message);
       } else {
         setProducts(data || []);
+        console.log(products, "products");
         calculateStats(data || []);
       }
       setLoading(false);
     };
 
+    const fetchorders = async () => {
+      const { data, error } = await supabase.from("orders").select("*");
+      if (error) {
+        console.error("Error fetching products:", error.message);
+      } else {
+        setOrders(data);
+        console.log(Orders, "orders");
+      }
+      setLoading(false);
+    };
+
     fetchProducts();
-  }, [supabase, calculateStats]); // Added calculateStats to dependencies
+    fetchorders();
+  }, [supabase]); // Added calculateStats to dependencies
 
   const lowStockProducts = products.filter((p) => p.stock < 15);
   const topSellingProducts = [...products]
@@ -221,12 +242,7 @@ const AdminPanel = () => {
                 <TrendingUp className="h-4 w-4 text-green-500" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
-                  {products.reduce(
-                    (sum, product) => sum + (product.sales_count || 0),
-                    0
-                  )}
-                </div>
+                <div className="text-2xl font-bold">{Orders?.length || 0}</div>
                 <p className="text-xs text-muted-foreground">Units sold</p>
               </CardContent>
             </Card>
@@ -234,14 +250,49 @@ const AdminPanel = () => {
 
           {/* Charts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <Card>
+            {/* Best Selling Product Card */}
+            <Card className="h-full w-full">
               <CardHeader>
-                <CardTitle>Sales by Category</CardTitle>
+                <CardTitle>Best Selling Product</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-[300px]">
-                  <Pie data={pieChartData} options={chartOptions} />
-                </div>
+                {topSellingProducts.length > 0 ? (
+                  <div className="w-full md:w-1/2 h-full flex flex-col md:flex-row items-center gap-4">
+                    <img
+                      src={
+                        topSellingProducts[0].image_url || "/placeholder.svg"
+                      }
+                      alt={topSellingProducts[0].title}
+                      className="w-full h-full object-cover rounded-lg shadow-md"
+                    />
+                    <div className=" w-full md:w-1/2 h-full flex flex-col gap-2">
+                      <h3 className="text-lg font-semibold">
+                        {topSellingProducts[0].title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Sales:{" "}
+                        <span className="font-medium">
+                          {topSellingProducts[0].sales_count}
+                        </span>
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Stock Left:{" "}
+                        <span className="font-medium">
+                          {topSellingProducts[0].stock}
+                        </span>
+                      </p>
+                      <Link
+                        href={`/admin/products/${topSellingProducts[0].id}`}
+                      >
+                        <Button className="mt-2">View Details</Button>
+                      </Link>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="text-center text-muted-foreground">
+                    No sales data available.
+                  </p>
+                )}
               </CardContent>
             </Card>
 

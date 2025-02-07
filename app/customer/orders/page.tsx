@@ -113,8 +113,8 @@ export default function OrdersPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin">
-          <Package className="w-8 h-8 text-primary" />
+        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-orange-500 border-solid">
+          <Package className="w-10 h-10 mx-auto mt-4 text-orange-500" />
         </div>
       </div>
     )

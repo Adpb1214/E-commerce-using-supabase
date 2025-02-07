@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Minus, Plus, X, ArrowLeft, ArrowRight, Package } from "lucide-react"
+import { Minus, Plus, X, ArrowLeft, ArrowRight, Package, ShoppingCart } from "lucide-react"
 import { toast } from "react-hot-toast"
 
 import Link from "next/link"
@@ -159,8 +159,8 @@ const userdata=user?.user;
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin">
-          <Package className="w-8 h-8 text-primary" />
+        <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-blue-500 border-solid">
+          <ShoppingCart className="w-8 h-8 text-primary mx-auto mt-4 text-blue-500" />
         </div>
       </div>
     )
@@ -251,7 +251,7 @@ const userdata=user?.user;
               </div>
 
               <div className="p-4 flex justify-between items-center bg-muted/50">
-                <Link href="/shop">
+                <Link href="/customer/products">
                   <Button variant="outline">
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     Return to Shop

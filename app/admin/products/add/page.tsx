@@ -1,13 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { useRouter } from "next/navigation"
-import { Loader2, AlertCircle } from "lucide-react"
+import { useState } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
+import { Loader2, AlertCircle } from "lucide-react";
+import { toast } from "react-toastify";
 
 const AddProduct = () => {
-  const supabase = createClientComponentClient()
-  const router = useRouter()
+  const supabase = createClientComponentClient();
+  const router = useRouter();
 
   const [form, setForm] = useState({
     title: "",
@@ -15,51 +16,76 @@ const AddProduct = () => {
     price: "",
     stock: "",
     category: "",
-    image_url: "",
-  })
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
+  // Handle text input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
+  // Handle file selection
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  };
+
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError("")
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    const { title, description, price, stock, category, image_url } = form
+    const { title, description, price, stock, category } = form;
 
     try {
-      if (!title || !description || !price || !stock || !category || !image_url) {
-        setError("All fields are required.")
-        return
+      // Validation
+      if (!title || !description || !price || !stock || !category || !imageFile) {
+        setError("All fields are required, including an image.");
+        return;
       }
 
+      // Upload image to Supabase Storage
+      const fileExt = imageFile.name.split(".").pop();
+      const filePath = `products/${Date.now()}.${fileExt}`; // Stores inside "product-images/products/"
+
+      const { data: imageData, error: imageError } = await supabase.storage
+        .from("product-images")
+        .upload(filePath, imageFile);
+
+      if (imageError) throw imageError;
+
+      // Get the public URL of the uploaded image
+      const { data: urlData } = supabase.storage.from("product-images").getPublicUrl(filePath);
+      const imageUrl = urlData.publicUrl;
+
+      // Insert product data into Supabase table
       const { error } = await supabase.from("products").insert({
         title,
         description,
         price: Number.parseFloat(price),
         stock: Number.parseInt(stock, 10),
         category,
-        image_url,
-      })
+        image_url: imageUrl, // Store image URL in products table
+      });
 
-      if (error) throw error
+      if (error) throw error;
 
-      alert("Product added successfully!")
-      router.push("/admin/products")
+      toast.success("Product added successfully!");
+      router.push("/admin/products");
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message); // Extract the error message
+        setError(err.message);
       } else {
         setError("An unknown error occurred");
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -126,12 +152,11 @@ const AddProduct = () => {
                   required
                   className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                 />
+                {/* File input for image upload */}
                 <input
-                  type="text"
-                  name="image_url"
-                  placeholder="Image URL"
-                  value={form.image_url}
-                  onChange={handleChange}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
                   required
                   className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
                 />
@@ -155,8 +180,7 @@ const AddProduct = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddProduct
-
+export default AddProduct;

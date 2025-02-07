@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const supabase = createClientComponentClient();
@@ -67,7 +68,7 @@ const Register = () => {
 
         if (profileError) throw profileError;
 
-        alert("Registration successful!");
+        toast.success("Registration successful!");
         router.push("/auth/login"); // Redirect to login page
       }
     } catch (err: unknown) {

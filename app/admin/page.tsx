@@ -227,7 +227,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 ">
         <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Revenue Over Time</CardTitle>
@@ -247,29 +247,7 @@ export default function DashboardPage() {
             </ChartContainer>
           </CardContent>
         </Card>
-        <Card className="col-span-3">
-          <CardHeader>
-            <CardTitle>Orders by Category</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={categoryData}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={80}
-                    fill="hsl(var(--primary))"
-                  />
-                  {/* <ChartTooltip /> */}
-                </PieChart>
-              </ResponsiveContainer>
-            </ChartContainer>
-          </CardContent>
-        </Card>
+      
       </div>
 
       <Card>

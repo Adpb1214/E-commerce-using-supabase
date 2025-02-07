@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "react-toastify";
 
 type UserProfile = {
   name: string;
@@ -46,6 +47,7 @@ export default function AdminHeader() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     window.location.href = "/auth/login";
+    toast.success("Logged Out Successfully!")
   };
 
   return (
@@ -64,6 +66,9 @@ export default function AdminHeader() {
           </Link>
           <Link href="/admin/products" className="hover:text-gray-300">
             Products
+          </Link>
+          <Link href="/admin/adminfaq" className="hover:text-gray-300">
+            FAQ
           </Link>
         </nav>
       </div>
@@ -84,7 +89,8 @@ export default function AdminHeader() {
             <DropdownMenuContent align="end" className="bg-gray-800 text-white">
               <DropdownMenuItem className="hover:bg-gray-700 flex items-center gap-2">
                 <User className="w-4 h-4" />
-                Profile
+                <Link href={"/admin/profile"}>Profile</Link>
+               
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={handleLogout}

@@ -72,7 +72,7 @@ export default function AdminOrders() {
   const fetchOrders = async () => {
     setLoading(true);
     setError("");
-  
+
     const { data, error } = await supabase
       .from("orders")
       .select(
@@ -82,37 +82,35 @@ export default function AdminOrders() {
       `
       )
       .order("created_at", { ascending: false });
-  
+
     if (error) {
       console.error("Error fetching orders:", error.message);
       setError("Failed to fetch orders. Please try again.");
       setLoading(false);
       return;
     }
-  
+
     console.log("Supabase Orders Data:", data); // Debugging step
-  
-    // Convert array fields into single objects
+
+    // Convert array fields into single objects if needed
     const formattedData: Order[] = data.map((order) => ({
       id: order.id,
       total_price: order.total_price,
       created_at: order.created_at,
       order_status: order.order_status,
-      user: order.user?.[0] || null, // Fix: Extract first user object
+      user: order.user, // Directly assign user object
       order_items: order.order_items.map((item) => ({
         product_id: item.product_id,
         quantity: item.quantity,
         price: item.price,
-        products: item.products?.[0] || null, // Fix: Extract first product object
+        products: item.products, // Directly assign product object
       })),
     }));
-  
+
     setOrders(formattedData);
     calculateMetrics(formattedData);
     setLoading(false);
   };
-  
-  
 
   const calculateMetrics = (orders: Order[]) => {
     const totalRevenue = orders.reduce((sum, order) => sum + order.total_price, 0);

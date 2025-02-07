@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { toast } from "react-toastify";
 
 type product = {
   title: string;
@@ -91,7 +92,7 @@ const ProductDetails = () => {
 
       if (error) throw error;
 
-      alert("Product updated successfully!");
+      toast.success("Product updated successfully!");
       router.refresh();
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -116,7 +117,7 @@ const ProductDetails = () => {
 
       if (error) throw error;
 
-      alert("Product deleted successfully!");
+      toast.success("Product deleted successfully!");
       router.push("/admin/products");
     } catch (err: unknown) {
       if (err instanceof Error) {
@@ -129,7 +130,12 @@ const ProductDetails = () => {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
+      </div>
+    );
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (

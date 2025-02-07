@@ -1,20 +1,17 @@
 "use client";
 
-// app/layout.tsx
 import { usePathname } from "next/navigation";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";  // Import React Query
 import "./globals.css";
-// import { Footer } from "./Layout/Footer/page";
 import AdminHeader from "./Layout/Header/AdminHeader";
-// import { Header } from "./Layout/Header/page";
 import CustomerHeader from "./Layout/Header/CustomerHeader";
-import { ToastContainer } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
 import Footer from "./Layout/Footer/page";
 import Header from "./Layout/Header/page";
-// export const metadata = {
-//   title: "E-Commerce",
-//   description: "A modern e-commerce application",
-// };
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+
+// Initialize React Query Client
+const queryClient = new QueryClient();
 
 export default function RootLayout({
   children,
@@ -29,21 +26,20 @@ export default function RootLayout({
     HeaderComponent = AdminHeader;
   } else if (pathname.startsWith("/customer")) {
     HeaderComponent = CustomerHeader;
-  }
-  // } else if (pathname.startsWith("/auth")) {
-  //   HeaderComponent = AuthHeader;
-  // }
-  else {
+  } else {
     HeaderComponent = Header;
   }
 
   return (
     <html lang="en">
       <body>
-        <HeaderComponent />
-        <main>{children}</main>
-        <Footer />
-        <ToastContainer />
+        
+        <QueryClientProvider client={queryClient}>
+          <HeaderComponent />
+          <main>{children}</main>
+          <Footer />
+          <ToastContainer />
+        </QueryClientProvider>
       </body>
     </html>
   );
