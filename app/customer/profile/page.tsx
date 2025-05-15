@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -176,7 +176,7 @@ const ProfileField = ({
   name,
   onChange,
 }: {
-  icon: any;
+  icon: ReactNode;
   label: string;
   value: string;
   editing: boolean;

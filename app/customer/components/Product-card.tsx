@@ -19,6 +19,7 @@ export interface Product {
 
 interface ProductCardProps {
   product: Product
+  className?: string
 }
 
 export function ProductCard({ product }: ProductCardProps) {

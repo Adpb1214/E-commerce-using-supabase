@@ -164,7 +164,7 @@ const UserQueries = () => {
           <div className="md:sticky md:top-6 h-fit">
             <Card className="bg-white">
               <CardHeader>
-                <CardTitle>Don't find your answer?</CardTitle>
+                <CardTitle>Don&apos;t find your answer?</CardTitle>
                 <p className="text-sm text-gray-500">
                   Ask for support. Our team will respond to your query as soon as possible.
                 </p>

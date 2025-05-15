@@ -22,7 +22,6 @@ export default function CustomerHeader() {
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [error, setError] = useState("");
 
   // Fetch Profile
   const fetchProfile = async () => {

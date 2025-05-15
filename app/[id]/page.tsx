@@ -93,80 +93,9 @@ const handleClick=()=>{
     }
   }
 
-  const submitReview = async () => {
-    if (!newReview.rating || !newReview.review.trim()) {
-      setError("Please provide both rating and review text")
-      return
-    }
 
-    const { data: user } = await supabase.auth.getUser()
 
-    if (!user?.user) {
-      setError("You must be logged in to submit a review")
-      return
-    }
 
-    // Check if user has already reviewed
-    const existingReview = reviews.find((r) => r.user_id === user.user.id)
-
-    if (existingReview) {
-      // Update existing review
-      const { error } = await supabase
-        .from("reviews")
-        .update({
-          rating: newReview.rating,
-          review: newReview.review,
-        })
-        .eq("id", existingReview.id)
-
-      if (error) {
-        setError("Error updating review")
-        return
-      }
-    } else {
-      // Create new review
-      const { error } = await supabase.from("reviews").insert({
-        user_id: user.user.id,
-        product_id: id,
-        rating: newReview.rating,
-        review: newReview.review,
-      })
-
-      if (error) {
-        setError("Error submitting review")
-        return
-      }
-    }
-
-    // Refresh reviews
-    fetchReviews()
-    setNewReview({ rating: 0, review: "" })
-  }
-
-  const addToWishlist = async () => {
-    const { data: user } = await supabase.auth.getUser()
-
-    if (!user?.user) {
-      setError("You must be logged in to add items to your wishlist")
-      return
-    }
-
-    const { error } = await supabase.from("wishlist").insert({
-      user_id: user.user.id,
-      product_id: id,
-    })
-
-    if (error) {
-      if (error.code === "23505") {
-        // Unique constraint error
-        setError("This item is already in your wishlist")
-      } else {
-        setError("Error adding to wishlist")
-      }
-    } else {
-      alert("Added to wishlist!")
-    }
-  }
 
   if (!product) {
     return <div className="container mx-auto px-4 py-6">Loading...</div>

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
-import { Minus, Plus, X, ArrowLeft, ArrowRight, Package, ShoppingCart } from "lucide-react"
+import { Minus, Plus, X, ArrowLeft, ArrowRight, ShoppingCart } from "lucide-react"
 import { toast } from "react-hot-toast"
 
 import Link from "next/link"

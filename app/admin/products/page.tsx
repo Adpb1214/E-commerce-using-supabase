@@ -13,7 +13,7 @@ import {
   LinearScale,
   BarElement,
 } from "chart.js";
-import { Pie, Bar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { Package, AlertTriangle, TrendingUp, Archive } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -117,23 +117,23 @@ const AdminPanel = () => {
     .sort((a, b) => (b.sales_count || 0) - (a.sales_count || 0))
     .slice(0, 5);
 
-  const pieChartData = {
-    labels: Object.keys(categorySales),
-    datasets: [
-      {
-        data: Object.values(categorySales),
-        backgroundColor: [
-          "hsl(142, 76%, 36%)",
-          "hsl(217, 91%, 60%)",
-          "hsl(43, 96%, 56%)",
-          "hsl(0, 84%, 60%)",
-          "hsl(271, 91%, 65%)",
-        ],
-        borderColor: "white",
-        borderWidth: 2,
-      },
-    ],
-  };
+  // const pieChartData = {
+  //   labels: Object.keys(categorySales),
+  //   datasets: [
+  //     {
+  //       data: Object.values(categorySales),
+  //       backgroundColor: [
+  //         "hsl(142, 76%, 36%)",
+  //         "hsl(217, 91%, 60%)",
+  //         "hsl(43, 96%, 56%)",
+  //         "hsl(0, 84%, 60%)",
+  //         "hsl(271, 91%, 65%)",
+  //       ],
+  //       borderColor: "white",
+  //       borderWidth: 2,
+  //     },
+  //   ],
+  // };
 
   const barChartData = {
     labels: Object.keys(categoryInventory),

@@ -57,7 +57,7 @@ const AddProduct = () => {
         .upload(filePath, imageFile);
 
       if (imageError) throw imageError;
-
+console.log(imageData)
       // Get the public URL of the uploaded image
       const { data: urlData } = supabase.storage.from("product-images").getPublicUrl(filePath);
       const imageUrl = urlData.publicUrl;

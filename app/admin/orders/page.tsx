@@ -53,6 +53,28 @@ type Order = {
   order_items: OrderItem[];
 };
 
+// Define the raw data structure that comes from Supabase
+type RawSupabaseOrder = {
+  id: string;
+  total_price: number;
+  created_at: string;
+  order_status: string;
+  user: Array<{
+    id: string;
+    phone_number: string;
+    name: string;
+  }>;
+  order_items: Array<{
+    product_id: string;
+    quantity: number;
+    price: number;
+    products: Array<{
+      title: string;
+      description: string;
+    }>;
+  }>;
+};
+
 export default function AdminOrders() {
   const supabase = createClientComponentClient();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -92,18 +114,18 @@ export default function AdminOrders() {
 
     console.log("Supabase Orders Data:", data); // Debugging step
 
-    // Convert array fields into single objects if needed
-    const formattedData: Order[] = data.map((order) => ({
+    // Transform the data to match our Order type
+    const formattedData: Order[] = (data as unknown as RawSupabaseOrder[]).map((order) => ({
       id: order.id,
       total_price: order.total_price,
       created_at: order.created_at,
       order_status: order.order_status,
-      user: order.user, // Directly assign user object
+      user: order.user[0], // Extract the first item from the user array
       order_items: order.order_items.map((item) => ({
         product_id: item.product_id,
         quantity: item.quantity,
         price: item.price,
-        products: item.products, // Directly assign product object
+        products: item.products[0], // Extract the first item from the products array
       })),
     }));
 
